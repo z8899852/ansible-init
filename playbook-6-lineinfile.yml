@@ -1,0 +1,9 @@
+---
+  - name: use lineinfile to /etc/hosts
+    hosts: webserver1
+    tasks:
+      - name: lineinfile
+        lineinfile:
+          path: /etc/hosts
+          line: 172.16.200.254 bigdata
+

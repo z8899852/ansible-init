@@ -1,0 +1,13 @@
+---
+  - name: yum a lot services
+    hosts:
+      - webserver1
+      - dbserver1
+    tasks:
+      - name: yum install httpd packages
+        yum:
+          name:
+            - httpd
+            - php
+            - mariadb
+          state: latest

@@ -1,0 +1,39 @@
+---
+  - name: create web service
+    hosts: webserver1
+    vars:
+      pkgs:
+        - httpd
+        - php
+        - mariadb-*
+        - mod_ssl
+      web:
+        - httpd
+    tasks:
+      - name: yum install pkgs
+        yum:
+          name: "{{item}}"
+          state: latest
+        loop: "{{pkgs}}"
+      - name: service start enable
+        service:
+          name: "{{item}}"
+          state: started
+          enabled: true
+        loop: "{{web}}"
+      - name: firewalld enable http
+        firewalld:
+          service: http
+          state: enabled
+          immediate: true
+          permanent: true
+      - name: firewalld enable https
+        firewalld:
+          service: https
+          state: enabled
+          immediate: true
+          permanent: true
+      - name: create /var/www/html/index.html
+        copy:
+          content: '1218create file\n'
+          dest: /var/www/html/index.html

@@ -1,0 +1,14 @@
+web_pkg1: httpd
+web_pkg2=php
+web_pkg3=mod_ssl
+web_srv = httpd
+web_vhost_src = files/virhosts.conf
+web_vhost_dest = /etc/httpd/conf.d/virhosts.conf
+web_access_src = files/htaccess
+web_access_dest = /var/www/https/.htaccess
+web_pwfile_src = files/apache.pw
+web_pwfile_dest = /var/www/apache.pw
+web_root1 = /var/www/html
+web_root2 = /var/www/https
+fire_pkg = firewalld
+fire_srv = firewalld

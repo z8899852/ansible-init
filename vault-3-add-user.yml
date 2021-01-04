@@ -1,0 +1,9 @@
+---
+  - name: create user
+    hosts: webserver1
+    vars_files: vault-3-user-profile.yml
+    tasks:
+      - name: create users "{{username}}"
+        user:
+          name: "{{username}}"
+          password: "{{password}}"

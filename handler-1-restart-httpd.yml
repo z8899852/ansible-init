@@ -1,0 +1,19 @@
+---
+  - name: restart httpd when configure changed
+    hosts: webserver1
+    tasks:
+      - name: yum install httpd
+        yum:
+          name: httpd
+          state: present
+      - name: upload configure file
+        copy:
+          src: check.conf
+          dest: /etc/httpd/conf.d/check.conf
+        notify:
+          - restart httpd
+    handlers:
+      - name: restart httpd
+        service:
+          name: httpd
+          state: restarted

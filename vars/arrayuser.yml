@@ -1,0 +1,11 @@
+users:
+  melody:
+    firstname: melody
+    lastname: tsai
+    homedir: /home/nis/melody
+    password: $6$.qKskfiY4yQgF8Wg$J6uMhgj6GWXx5ZkFB3ncrDg8MX6hb.4ELzmJmE3vkq1JX2N6xpy8t9L7H4hYSgjGtVsATQZO16Yvng56X5eg8.
+  amanda:
+    firstname: amanda
+    lastname: tsai
+    homedir: /home/nis/amanda
+    password: $6$.qKskfiY4yQgF8Wg$J6uMhgj6GWXx5ZkFB3ncrDg8MX6hb.4ELzmJmE3vkq1JX2N6xpy8t9L7H4hYSgjGtVsATQZO16Yvng56X5eg8.

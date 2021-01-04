@@ -1,0 +1,12 @@
+---
+  - name: yum a lot services
+    hosts:
+      - website
+      - devel
+      - mylab
+    tasks:
+      - name: yum install packages "{{pkg}}"
+        yum:
+          name: "{{pkg}}"
+          state: latest
+

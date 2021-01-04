@@ -1,0 +1,12 @@
+---
+  - name: check user
+    hosts: webserver1
+    tasks:
+      - name: use id to check joe man
+        shell: "id joe && echo OL || echo FAIL"
+        register: myoutput
+        failed_when: "'FAIL' in myoutput.stdout"
+
+      - name: show message
+        debug:
+          var: myoutput

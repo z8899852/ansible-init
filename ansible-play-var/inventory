@@ -1,0 +1,7 @@
+[website]
+webserver1
+dbserver1
+
+[devel]
+webserver1
+pronode1

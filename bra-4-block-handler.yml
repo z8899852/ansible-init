@@ -1,0 +1,48 @@
+---
+  - name: block handler
+    hosts: webserver1
+    tasks:
+      - name: check HW and OS system
+        debug: 
+          msg: RAM OS check
+        when: |
+          ansible_facts['memtotal_mb'] < 1024 or ansible_facts['distribution'] != 'CentOS'
+      - name: install web pkgs
+        yum:
+          name: 
+            - httpd
+            - mod_ssl
+          state: latest
+      - name: start and enable httpd
+        service:
+          name: httpd
+          state: started
+          enabled: true
+      - name: upload config file
+        block:
+          - name: upload check.conf
+            copy:
+              src: check.conf
+              dest: /etc/httpd/conf.d/check.conf
+            ignore_errors: true
+            notify:
+              - restart httpd
+        rescue:
+          - name: upload file failure
+            debug:
+              
+      - name: firewalld modify
+        firewalld:
+          service: "{{item}}"
+          state: enabled
+          immediate: true
+          permanent: true
+        loop:
+          - http
+          - https
+    handlers:
+      - name: restart httpd
+        service:
+          name: httpd
+          state: restarted
+          enabled: true

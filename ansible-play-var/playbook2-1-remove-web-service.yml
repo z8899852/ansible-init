@@ -1,0 +1,35 @@
+---
+  - name: remove web service
+    hosts: webserver1
+    tasks:
+      - name: remove file -1 index.html
+        file:
+          path: /var/www/html
+          state: absent
+      - name: remove file -2 apache.pw
+        file:
+          path: /var/www/apache.pw
+          state: absent
+      - name: remove file -3 virhosts.conf
+        file:
+          path: /etc/httpd/conf.d/virhosts.conf
+          state: absent
+      - name: remove service
+        yum:
+          name: "{{item}}"
+          state: removed
+        loop:
+          - httpd
+          - php
+          - mariadb-server
+          - mariadb
+          - mod_ssl
+      - name: remove firewall
+        firewalld:
+          service: "{{item}}"
+          state: disabled
+          immediate: true
+          permanent: true
+        loop:
+          - http
+          - https

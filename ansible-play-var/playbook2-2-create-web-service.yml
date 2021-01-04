@@ -1,0 +1,11 @@
+---
+  - name: create web service
+    hosts: 
+      - webserver1
+      - dbserver1
+    vars_files: vars/file-all-2.yml
+    tasks:
+      - name: yum service
+        yum:
+          name: "{{ web_pkg{1,2,3} }}"
+          state: latest

@@ -1,0 +1,8 @@
+---
+- hosts: webserver1
+  tasks:
+          - name: useradd
+            user:
+                    name: myuser1
+                    uid: 3101
+                    password: $6$.qKskfiY4yQgF8Wg$J6uMhgj6GWXx5ZkFB3ncrDg8MX6hb.4ELzmJmE3vkq1JX2N6xpy8t9L7H4hYSgjGtVsATQZO16Yvng56X5eg8.

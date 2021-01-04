@@ -1,0 +1,28 @@
+---
+  - name: create user
+    hosts: webserver1
+    vars:
+      myusers:
+        - exuser1
+        - exuser2
+        - exuser3
+        - exuser4
+    tasks:
+      - name: create group
+        group:
+          name: exgroup
+          state: present
+      - name: create user
+        user:
+          name: "{{item}}"
+          groups: exgroup
+        loop: "{{myusers}}"  
+      - name: use command id check user
+        command:
+          cmd: id "{{item}}"
+        register: myoutput
+        loop: "{{myusers}}"
+      - name: show "{{item}}"
+        debug:
+          msg: output is "{{item.stdout}}"
+        loop: "{{myoutput['results']}}"

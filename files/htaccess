@@ -1,0 +1,4 @@
+AuthType	basic
+AuthName	"Input your passwd"
+AuthUserFile	/var/www/apache.pw
+require valid-user

@@ -1,0 +1,11 @@
+---
+  - name: restart httpd
+    hosts: webserver1
+    vars:
+      myservice: httpd
+    tasks:
+      - name: restart httpd
+        service:
+          name: "{{myservice}}"
+          state: restarted
+        when: ansible_facts['distribution'] == "CentOS" and myservice == "httpd"

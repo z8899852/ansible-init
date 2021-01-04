@@ -1,0 +1,27 @@
+---
+  - name: do not use loop to show service
+    hosts: webserver1
+    tasks:
+      - name: check httpd service
+        command:
+          cmd: systemctl is-active httpd
+        register: myoutput
+      - name: show status
+        debug:
+          var: myoutput.stdout
+
+      - name: check sshd service
+        command:
+          cmd: systemctl is-active sshd
+        register: myoutput
+      - name: show status
+        debug:
+          var: myoutput.stdout
+      - name: check tuned
+        command:
+          cmd: systemctl is-active tuned
+        register: myoutput
+      - name: show status
+        debug:
+          var: myoutput.stdout
+

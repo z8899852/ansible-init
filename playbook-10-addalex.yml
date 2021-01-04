@@ -1,0 +1,10 @@
+---
+- name: add user
+  hosts: webserver1
+  vars_files: vars/username.yml
+  tasks:
+    - name: useradd
+      user:
+        name: "{{ username }}"
+        uid: "{{ uid }}"
+        password: "{{ password }}"

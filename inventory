@@ -1,0 +1,16 @@
+gitclient
+gitclient[01:20].ksu
+172.17.101.[1:30]
+
+[website]
+webserver1
+dbserver1
+
+[devel]
+webserver1
+devnode1
+pronode1
+
+[mylab:children]
+website
+devel

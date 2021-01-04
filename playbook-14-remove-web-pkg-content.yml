@@ -1,0 +1,19 @@
+---
+  - name: unit 7 remove web pkg content
+    hosts: webserver1
+    vars:
+      pkg:
+        - httpd
+        - php
+        - mariadb-server
+        - mariadb
+    tasks:
+      - name: remove index.html
+        file:
+          path: /var/www/html/index.html
+          state: absent 
+      - name: yum remove
+        yum:
+          name: "{{pkg}}"
+          state: absent
+          

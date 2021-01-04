@@ -1,0 +1,31 @@
+---
+  - name: handler restart service
+    hosts: webserver1
+    force_handlers: true
+    tasks:
+      - name: yum modules
+        yum:
+          name: "{{item}}"
+          state: present
+        loop:
+          - httpd
+          - mariadb-server
+
+      - name: upload configure file
+        copy:
+          src: check.conf
+          dest: /etc/httpd/conf.d/check.conf
+        notify:
+          - restart service
+      - name: install error service
+        yum:
+          name: hehehe
+          state: present
+    handlers:
+      - name: restart service
+        service:
+          name: "{{item}}"
+          state: restarted
+        loop:
+          - mariadb
+          - httpd

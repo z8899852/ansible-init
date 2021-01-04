@@ -1,0 +1,16 @@
+---
+  - name: use loop check service
+    hosts: webserver1
+    tasks:
+      - name: check "{{item}}" service
+        command:
+          cmd: systemctl is-active "{{item}}"
+        register: myoutput
+        loop:
+          - httpd
+          - sshd
+          - tuned
+      - name: show "{{item}}"
+        debug:
+          msg: output is "{{item.stdout}}"
+        loop: "{{myoutput['results']}}"

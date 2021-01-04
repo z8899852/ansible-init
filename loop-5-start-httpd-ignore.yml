@@ -1,0 +1,26 @@
+---
+  - name: start service with condition
+    hosts: webserver1
+    vars:
+      myservice:
+        - httpd
+        - named
+        - squid
+    tasks:
+      - name: check daemon program
+        command: which "{{item}}"
+        ignore_errors: true
+        register: myoutput
+        loop: "{{myservice}}"
+
+      - name: start service
+        service:
+          name: "{{item.item}}"
+          state: restarted
+        register: myoutput2
+        loop: "{{myoutput['results']}}"
+        when: item.rc == 0
+      - name: show stdout
+        debug:
+          var: item
+        loop: "{{myoutput2['results']}}"

@@ -1,0 +1,11 @@
+---
+  - name: yum module
+    hosts: webserver1
+    vars:
+      pkg:
+        - expect
+    tasks:
+      - name: use yum module
+        yum:
+          name: "{{pkg}}"
+          state: latest

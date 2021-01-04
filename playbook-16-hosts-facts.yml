@@ -1,0 +1,7 @@
+---
+  - name: list my managed hosts facts
+    hosts: website
+    tasks:
+      - name: list managed hosts facts
+        debug:
+          var: ansible_facts

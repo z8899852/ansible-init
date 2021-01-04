@@ -1,0 +1,21 @@
+---
+  - name: upload web server file
+    hosts: webserver1
+    tasks:
+      - name: virhosts.conf
+        copy:
+          src: files/virhosts.conf
+          dest: /etc/httpd/conf.d/
+      - name: create /var/www/https
+        file:
+          path: /var/www/https
+          state: directory
+      - name: htaccess
+        copy:
+          src: files/htaccess
+          dest: /var/www/https/.htaccess
+      - name: apache.pw
+        copy:
+          src: files/apache.pw
+          dest: /var/www/
+

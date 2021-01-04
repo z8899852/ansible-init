@@ -1,0 +1,44 @@
+---
+  - name: remove web service
+    hosts: webserver1
+    vars:
+      pkgs:
+        - httpd
+        - php
+        - mod_ssl
+        - mariadb-*
+    tasks:
+      - name: yum remove service
+        yum:
+          name: "{{pkgs}}"
+          state: removed
+      - name: remove related file-index.html
+        file:
+          path: /var/www/html/index.html
+          state: absent
+      #- name: remove related file-/var/www/https
+       # file:
+        #  path: /var/www/https
+         # recurse: true
+          #state: absent
+      - name: remove related file-/var/www/apache.pw
+        file:
+          path: /var/www/apache.pw
+          state: absent
+      - name: remove related file-/etc/httpd/conf.d/virhosts.conf
+        file:
+          path: /etc/httpd/conf.d/virhosts.conf
+          state: absent
+      - name: firewalld disabled http
+        firewalld:
+          service: http
+          state: disabled
+          immediate: true
+          permanent: true
+      - name: firewalld disabled http
+        firewalld:
+          service: https
+          state: disabled
+          immediate: true
+          permanent: true
+

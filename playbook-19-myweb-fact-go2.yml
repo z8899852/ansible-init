@@ -1,0 +1,23 @@
+---
+  - name: create web server for fact
+    hosts: webserver1
+    vars:
+      content: "BOREN \n G090A001\n"
+    tasks:
+      - name: yum
+        yum:
+          name: "{{ansible_facts['ansible_local']['myweb']['web']['pkg']}}"
+          state: latest
+
+      - name: service 
+        service:
+          name: "{{ansible_facts['ansible_local']['myweb']['web']['srv']}}"
+          enabled: "{{ansible_facts['ansible_local']['myweb']['web']['enabled']}}"
+          state: "{{ansible_facts['ansible_local']['myweb']['web']['state']}}"
+
+      - name: firewalld
+        firewalld:
+          immediate: true
+          permanent: true
+          service: "{{ansible_facts['ansible_local']['myweb']['web']['fire_srv']}}"
+          state: enabled

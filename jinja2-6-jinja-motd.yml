@@ -1,0 +1,20 @@
+---
+  - name: setup a file contect
+    hosts: webserver1
+    vars:
+      system_owner: student@gitserver101.dic.ksu
+    tasks:
+      - name: setup /etc/motd
+        template:
+          src: file/motd-2.j2
+          dest: /etc/motd
+          owner: root
+          group: root
+          mode: 0644
+      - name: get file contect
+        command:
+          cmd: cat /etc/motd
+        register: output
+      - name: show output
+        debug:
+          msg: "{{output.stdout}}"

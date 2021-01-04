@@ -1,0 +1,37 @@
+---
+  - name: create ftp
+    hosts: website
+    tasks:
+      - name: yum ftp
+        yum:
+          name: vsftpd
+          state: latest
+
+      - name: start ftp
+        service:
+          name: vsftpd
+          enabled: yes
+          state: started
+
+      - name: firewalld ftp
+        firewalld:
+          service: ftp
+          immediate: true
+          permanent: true
+          state: enabled
+
+      - name: copy file
+        copy:
+          content: "This FTP daemon setted by Ansible\n"
+          dest: /home/myuser1/readme.txt
+          group: myuser1
+          owner: myuser1
+
+  - name: check ftp file
+    hosts: localhost
+    become: false
+    tasks:
+      - name: get file
+        get_url:
+          url: ftp://myuser1:itismyuser@webserver1/readme.txt
+          dest: /dev/shm/checkftp.txt

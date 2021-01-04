@@ -1,0 +1,44 @@
+---
+  - name: add-service
+    hosts: webserver1
+    vars:
+      pkgs:
+        - httpd
+        - mod_ssl
+        - php
+      service: httpd
+      fire_rule: http
+      content: BoRen\nG090A001\n
+    tasks:
+      - name: yum service
+        yum:
+          name: "{{pkgs}}"
+          state: latest
+      - name: systemctl start httpd
+        service:
+          name: "{{service}}"
+          enabled: yes
+          state: started
+      - name: firewall
+        firewalld:
+          service: "{{fire_rule}}"
+          permanent: yes
+          state: enabled
+      - name: create web page for index.html
+        copy:
+          content: "{{content}}"
+          dest: /var/www/html/index.html
+  - name: task2
+    hosts: webserver1
+    become: false
+    tasks:
+      - name: check webserver1
+        uri:
+          url: http://webserver1
+          status_code: 200
+          return_content: true
+        register: output
+      - name: show register output
+        debug: 
+          #var: output
+          msg: "{{output.msg}}"

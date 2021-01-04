@@ -1,0 +1,10 @@
+---
+- hosts: webserver1
+  tasks:
+          - name: useradd
+            user:
+                    name: demouser
+                    uid: 3000
+                    password: $6$Ie9E/JrpwNdm8m64$CqL1jtUDyfEeyAqn8ZHZxhZ/7Cv8r5z.HZt8q4Cj/5FpMU6SvZGMbGIYTm0zqxPUYCa5zgeQlAM/lwUK6rM2V1
+
+

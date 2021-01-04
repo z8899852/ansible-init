@@ -1,0 +1,19 @@
+---
+  - name: web fact
+    hosts: webserver1
+    vars:
+      - src_file: myweb.fact
+      - dest_dir: /etc/ansible/facts.d
+    tasks:
+      - name: file modules
+        file:
+          path: "{{ dest_dir }}"
+          recurse: true
+          state: directory
+
+      - name: copy modules
+        copy:
+          src: "{{ src_file }}"
+          dest: "{{ dest_dir }}/{{ src_file }}"
+          
+          

@@ -1,0 +1,33 @@
+---
+  - name: install docker host
+    hosts: webserver1
+    tasks:
+      - name: upload docker repository
+        copy:
+          src: /etc/yum.repos.d/docker-ce.repo
+          dest: /etc/yum.repos.d/
+
+      - name: yum remove runc
+        yum:
+          name: runc
+          state: absent
+
+      - name: yum install docker
+        yum:
+          name: "{{item}}"
+          state: latest
+        loop:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+
+      - name: upload json
+        copy:
+          src: /etc/docker/daemon.json
+          dest: /etc/docker/
+
+      - name: service docker
+        service:
+          name: docker
+          enabled: true
+          state: started

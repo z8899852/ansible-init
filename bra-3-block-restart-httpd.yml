@@ -1,0 +1,20 @@
+---
+  - name: block tasks to check httpd daemon
+    hosts: webserver1
+    tasks:
+      - name: check httpd
+        block:
+          - name: ckeck httpd is active
+            command: systemctl is-active httpd
+          - name: check php.ini exist
+            command: ls /etc/php.ini
+        rescue:
+          - name: restart httpd
+            command: systemctl restart httpd
+        always:
+          - name: show httpd
+            command: systemctl status httpd
+            register: myoutput
+          - name: show output
+            debug:
+              var: myoutput.stdout

@@ -1,0 +1,21 @@
+---
+  - name: set firewalld
+    hosts: webserver1
+    tasks: 
+      - name: yum install firewalld
+        yum: 
+          name: firewalld
+          state: latest
+
+      - name: systemctl start firewalld
+        service:
+          name: firewalld
+          enabled: yes
+          state: started
+
+      - name: set firewalld
+        firewalld:
+           service: http
+           permanent: yes
+           state: enabled
+
