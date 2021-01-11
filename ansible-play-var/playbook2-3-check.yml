@@ -1,0 +1,42 @@
+---
+  - name: check web server url content
+    hosts: localhost
+    become: false
+    vars_files: files/secure.yml
+    tasks:
+      - name: check http://webserver1/index.html
+        uri:
+          url: http://webserver1/index.html
+          status_code: 200
+          return_content: true
+        register: return_content
+      - name: show register output
+        debug:
+          var: return_content.content
+
+      - name: uri https://webserver1/index.html
+        uri:
+          url: https://webserver1/index.html
+          validate_certs: false
+          return_content: true
+          status_code: 401
+        register: return_content
+
+      - name: debug
+        debug:
+          var: return_content.content
+
+      - name: uri https://webserver1/index.html
+        uri:
+          url: https://webserver1/index.html
+          validate_certs: false
+          force_basic_auth: true
+          return_content: true
+          user: "{{web_user}}"
+          password: "{{web_pass}}"
+        register: return_content
+
+      - name: debug
+        debug:
+          var: return_content.content
+

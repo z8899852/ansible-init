@@ -3,9 +3,87 @@
     hosts: 
       - webserver1
       - dbserver1
-    vars_files: vars/file-all-2.yml
+    vars_files: vars/file-all.yml
     tasks:
-      - name: yum service
+      - name: yum service web_pkg1
         yum:
-          name: "{{ web_pkg{1,2,3} }}"
+          name: 
+            - "{{web_pkg1}}"
+            - "{{web_pkg2}}"
+            - "{{web_pkg3}}"
           state: latest
+      - name: copy virhosts.conf
+        copy:
+          src: "{{web_vhost_src}}"
+          dest: "{{web_vhost_dest}}"
+          mode: 0644
+          owner: root
+          group: root
+      - name: file /var/www/https
+        file:
+          path: "{{web_root2}}"
+          mode: 0755
+          owner: root
+          group: root
+          state: directory
+      - name: copy .htaccess
+        copy:
+          src: "{{web_access_src}}"
+          dest: "{{web_access_dest}}"
+          mode: 0644
+      - name: copy apache.pw
+        copy:
+          src: "{{web_pwfile_src}}"
+          dest: "{{web_pwfile_dest}}"
+          owner: apache
+          group: apache
+          mode: u+r,g---,o---
+      - name: file /var/www/html
+        file:
+          path: "{{web_root1}}"
+          state: directory
+      - name: content root1 index.html
+        copy:
+          content: 'I am http service'
+          dest: "{{web_root1}}/index.html"
+      - name: content root2 index.html
+        copy:
+          content: 'My Ip:~ ,\n this is https service'
+          dest: "{{web_root2}}/index.html"
+      - name: service web_srv
+        service:
+          name: "{{web_srv}}"
+          state: started
+          enabled: yes
+      - name: service firewalld
+        service:
+          name: "{{fire_pkg}}"
+          state: started
+          enabled: yes
+      - name: service firewalld - http/https
+        firewalld:
+          service: http
+          immediate: yes
+          permanent: yes
+          state: enabled
+      - name: service firewalld - http/https
+        firewalld:
+          service: https
+          immediate: yes
+          permanent: yes
+          state: enabled
+  - name: check web server url content
+    hosts: localhost
+    become: false
+    tasks:
+      - name: check http://webserver1/index.html
+        uri:
+          url: http://webserver1/index.html
+          status_code: 200
+          return_content: true
+        register: output
+      - name: show register output
+        debug:
+          #var: output
+          msg: "{{output.msg}}"
+
