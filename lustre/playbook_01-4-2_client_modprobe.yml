@@ -1,0 +1,9 @@
+---
+  - name: install lustre server
+    hosts:
+      - client
+    tasks:
+      - name: modprobe lustre
+        modprobe:
+          name: lustre
+          state: present

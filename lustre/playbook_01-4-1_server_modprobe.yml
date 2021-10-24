@@ -1,0 +1,14 @@
+---
+  - name: install lustre server
+    hosts:
+      - oss
+    tasks:
+      - name: modprobe zfs
+        modprobe:
+          name: zfs
+          state: present
+
+      - name: modprobe lustre
+        modprobe:
+          name: lustre
+          state: present

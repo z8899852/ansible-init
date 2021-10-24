@@ -1,0 +1,7 @@
+---
+  - name: install lustre server
+    hosts:
+      - client
+    tasks:
+      - name: reboot host
+        reboot:

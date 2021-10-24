@@ -1,0 +1,22 @@
+---
+  - name: install lustre server
+    hosts:
+      - oss
+    tasks:
+      - name: yum lustre
+        yum:
+          name: 
+            - kmod-lustre-osd-ldiskfs
+            - lustre-osd-ldiskfs-mount
+            - lustre
+          state: latest
+
+      - name: yum kernel
+        yum:
+          name:
+            - kernel-4.18.0-240.el8
+            - kernel-devel-4.18.0-240.el8
+            - kernel-tools-4.18.0-240.el8
+            - kernel-tools-libs-4.18.0-240.el8
+          state: latest
+
