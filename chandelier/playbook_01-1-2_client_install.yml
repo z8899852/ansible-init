@@ -1,16 +1,26 @@
 ---
   - name: install lustre server
-    hosts:
-      - client
+    hosts: client
+    vars_files: vars/dkms_pkg.yml
     tasks:
       - name: create lustre.repo
         copy:
           src: /etc/yum.repos.d/lustre.repo
           dest: /etc/yum.repos.d/lustre.repo
-      
+
       - name: yum install epel-release
-        command: yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
-      
+        yum:
+          name: epel-release
+          state: latest
+
+      - name: yum dkms_pkg
+        yum :
+          name: "{{pkg}}"
+          state: latest
+
+      - name: enable powertool
+        command: 'dnf --enablerepo=powertools install device-mapper-devel libyaml-devel -y'
+
       - name: yum install dkms
         yum:
           name: dkms
@@ -19,9 +29,4 @@
       - name: yum install e2fsprogs
         yum:
           name: e2fsprogs
-          state: latest
-
-      - name: rpm -ivh kernel-devel
-        yum:
-          name: http://mirrors.portworx.com/mirrors/http/mirror.centos.org/centos/8/BaseOS/x86_64/os/Packages/kernel-devel-4.18.0-240.el8.x86_64.rpm
           state: latest
